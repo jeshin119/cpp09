@@ -13,7 +13,7 @@ class BitcoinExchange{
 		void	Calculate(std::string date, double val);
 	private:
 		BitcoinExchange(const BitcoinExchange& rhs);
-		BitcoinExchange&	operator=(BitcoinExchange& rhs);
+		BitcoinExchange&				operator=(BitcoinExchange& rhs);
 		std::map<std::string, double>	_m;
 };
 

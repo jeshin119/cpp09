@@ -8,8 +8,8 @@
 			"type": "lldb",
 			"request": "launch",
 			"name": "Debug",
-			"program": "${workspaceFolder}/btc",
-			"args": ["input.txt"],
+			"program": "ex01/a.out",
+			"args": ["1  1 /"],
 			"cwd": "${workspaceFolder}"
 		}
 	]
