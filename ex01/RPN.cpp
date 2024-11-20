@@ -16,15 +16,11 @@ RPN::RPN(const std::string& input){
 	while (getline(iss, token, ' ')){
 		if (token == "")
 			continue ;
-		// std::cout<<token<<"\n";
 		for (pos = 0 ; pos < 4; pos++){
 			if (token == opTab[pos])
 				break ;
 		}
 		if (pos == 4 && abs(strtod(token.c_str(), 0)) < 10){ 
-			if (strtod(token.c_str(), 0) == 0){
-				std::cout<< token<<"\n";
-			}
 			_st.push(strtod(token.c_str(), 0));
 			continue ;
 		}

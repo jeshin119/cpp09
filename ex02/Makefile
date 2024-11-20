@@ -1,11 +1,11 @@
-NAME := btc
+NAME := PmergeMe
 CXX := c++
 RM := rm -f
 CXXFLAGS := -Wall -Wextra -Werror -std=c++98
 DBG = -g -fsanitize=address
 SRCS := main.cpp\
-			BitcoinExchange.cpp
-HEADERS := BitcoinExchange.hpp
+			PmergeMe.cpp
+HEADERS := PmergeMe.hpp
 TESTFILE := test.sh
 
 OBJS = $(SRCS:.cpp=.o)

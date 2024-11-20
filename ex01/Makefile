@@ -15,6 +15,7 @@ $(NAME) : $(OBJS)
 
 d : $(SRCS) $(HEADERS)
 	$(CXX) $(DBG) $(SRCS) 
+
 test : $(NAME) $(TESTFILE)
 	bash $(TESTFILE)
 
