@@ -8,8 +8,8 @@
 			"type": "lldb",
 			"request": "launch",
 			"name": "Debug",
-			"program": "ex01/a.out",
-			"args": ["1  1 /"],
+			"program": "ex02/a.out",
+			"args": ["1 3 5 2 9"],
 			"cwd": "${workspaceFolder}"
 		}
 	]
