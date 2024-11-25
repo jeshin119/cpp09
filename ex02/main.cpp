@@ -40,13 +40,23 @@ int main(int ac, char** av){
 	std::cout <<"\n";
 
 	PmergeMe pmmV(ov);
-	PmergeMe pmmD(od);
+	// PmergeMe pmmD(od)
 
-	std::cout << "After: ";
+	std::cout << "After:   ";
 	for (std::vector<int>::iterator i = ov.begin(); i != ov.end(); i++)
 		std::cout << *i << " " ;
 	std::cout <<"\n";
 
 	pmmV.prtSpecification();
-	pmmD.prtSpecification();
+	// pmmD.prtSpecification();
+
+	//prove
+	try{
+		for(std::vector<int>::iterator it = ov.begin() ; it < ov.end() - 1 ; it ++){
+			if (*it > *(it + 1))
+				throw(std::runtime_error("Error: not sorted\n"));
+		}
+	}catch(std::exception& e){
+		std::cerr<<e.what();
+	}
 }

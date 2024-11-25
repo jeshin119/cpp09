@@ -9,7 +9,7 @@
 			"request": "launch",
 			"name": "Debug",
 			"program": "ex02/a.out",
-			"args": ["1 3 5 2 9"],
+			"args": ["1" , "8" ,"9", "93", "2" ,"1","3", "4", "52", "5","4" ,"5481",  "84"],
 			"cwd": "${workspaceFolder}"
 		}
 	]

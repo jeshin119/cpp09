@@ -9,29 +9,32 @@
 class PmergeMe{
 	public:
 		PmergeMe(std::vector<int>& v);
-		PmergeMe(std::deque<int>& d);
+		// PmergeMe(std::deque<int>& d);
 		~PmergeMe();
 
 		void	prtSpecification();
+		int		getCnt();
 	private:
 		PmergeMe();
 		PmergeMe(const PmergeMe& rhs);
 
-		void	_mergeInsertionSort(std::vector<int>* mc, std::vector<int>* sc, int* linkArr);
-		void	_binaryInsert(const int& val, std::vector<int>& mc);
-		void	_getJacobsthalNumbers(std::vector<int>& jacobNums, const int size);
-		// void	_divide(std::vector<int>* mc, std::vector<int>* sc);
+		void	_mergeInsertionSort(std::vector<int>* pmc, std::vector<int>* psc);
+		// void	_mergeInsertionSort(std::deque<int>* pmc, std::deque<int>* psc);
 
-		// void	_mergeInsertion(std::deque<int>& mc, std::deque<int>& sc);
+		int		_binaryInsert(const int& here, int end, std::vector<int>& mc);
+		// int		_binaryInsert(const int& val, int end, std::deque<int>& mc);
+
+		void	_getJacobsthalNumbers(std::vector<int>& jacobNums, const int size);
+		// void	_getJacobsthalNumbers(std::deque<int>& jacobNums, const int size);
 
 		PmergeMe&	operator=(const PmergeMe& rhs);
 
 		long long			_cnt;
 		long long			_range;
-		struct timeval		_startTime;
-		struct timeval		_endTime;
 		double				_duration;
 		std::string			_type;
+		std::vector<int>	_ov; // ov: origin Vector
+		std::deque<int>		_od; // od: origin Deque
 };
 
 # endif
