@@ -6,7 +6,6 @@ DBG = -g -fsanitize=address
 SRCS := main.cpp\
 			PmergeMe.cpp
 HEADERS := PmergeMe.hpp
-TESTFILE := test.sh
 
 OBJS = $(SRCS:.cpp=.o)
 
@@ -15,9 +14,6 @@ $(NAME) : $(OBJS)
 
 d : $(SRCS) $(HEADERS)
 	$(CXX) $(DBG) $(SRCS) 
-
-test : $(NAME) $(TESTFILE)
-	bash $(TESTFILE)
 
 %.o: %.cpp $(HEADERS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@

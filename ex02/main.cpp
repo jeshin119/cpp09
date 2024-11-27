@@ -34,27 +34,35 @@ int main(int ac, char** av){
 		return (1);
 	}
 
+	//Before
 	std::cout << "Berfore: ";
 	for (std::vector<int>::iterator i = ov.begin(); i != ov.end(); i++)
 		std::cout << *i << " " ;
 	std::cout <<"\n";
 
+	//merge sort
 	PmergeMe pmmV(ov);
-	// PmergeMe pmmD(od)
+	PmergeMe pmmD(od);
 
+	//After
 	std::cout << "After:   ";
 	for (std::vector<int>::iterator i = ov.begin(); i != ov.end(); i++)
 		std::cout << *i << " " ;
 	std::cout <<"\n";
 
+	//prt spec
 	pmmV.prtSpecification();
-	// pmmD.prtSpecification();
+	pmmD.prtSpecification();
 
 	//prove
 	try{
 		for(std::vector<int>::iterator it = ov.begin() ; it < ov.end() - 1 ; it ++){
 			if (*it > *(it + 1))
-				throw(std::runtime_error("Error: not sorted\n"));
+				throw(std::runtime_error("Error: Vector not sorted\n"));
+		}
+		for(std::deque<int>::iterator it = od.begin() ; it < od.end() - 1 ; it ++){
+			if (*it > *(it + 1))
+				throw(std::runtime_error("Error: Deque not sorted\n"));
 		}
 	}catch(std::exception& e){
 		std::cerr<<e.what();

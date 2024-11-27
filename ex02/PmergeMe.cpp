@@ -11,11 +11,21 @@ PmergeMe::PmergeMe(std::vector<int>& v) : _cnt(0), _range(v.size()) , _type("std
 	struct timeval		endTime;
 
 	gettimeofday(&startTime, 0);
-	if (v.size() != 1){
+	if (v.size() != 1)
 		_mergeInsertionSort(&v, 0, 0);
-}
 	gettimeofday(&endTime, 0);
-	_duration = (endTime.tv_sec - startTime.tv_sec) * 1000000 + (endTime.tv_usec - startTime.tv_usec);
+	_duration = (endTime.tv_sec - startTime.tv_sec) * 1000000.0 + (endTime.tv_usec - startTime.tv_usec) * 1.0;
+}
+
+PmergeMe::PmergeMe(std::deque<int>& d) : _cnt(0), _range(d.size()) , _type("std::deque"){
+	struct timeval		startTime;
+	struct timeval		endTime;
+
+	gettimeofday(&startTime, 0);
+	if (d.size() != 1)
+		_mergeInsertionSort(&d, 0, 0);
+	gettimeofday(&endTime, 0);
+	_duration = (endTime.tv_sec - startTime.tv_sec) * 1000000.0 + (endTime.tv_usec - startTime.tv_usec);
 }
 
 PmergeMe::~PmergeMe(){}
@@ -29,7 +39,8 @@ void	PmergeMe::_mergeInsertionSort(std::vector<int>* pmc, std::vector<int>* psc,
 		_cnt++;
 		if (pmc->at(0) >= pmc->at(1)){
 			std::swap(pmc->at(0), pmc->at(1));
-			std::swap(psc->at(0), psc->at(1));
+			if (psc)
+				std::swap(psc->at(0), psc->at(1));
 		}
 		return ;
 	}
@@ -116,8 +127,83 @@ void	PmergeMe::_mergeInsertionSort(std::vector<int>* pmc, std::vector<int>* psc,
 	// 	std::cout<<"\n";
 	// }
 }
+void	PmergeMe::_mergeInsertionSort(std::deque<int>* pmc, std::deque<int>* psc, std::deque<pair>* ppc){
+	if (pmc->size() == 1)
+		return ;
+	if (pmc->size() == 2){
+		_cnt++;
+		if (pmc->at(0) >= pmc->at(1)){
+			std::swap(pmc->at(0), pmc->at(1));
+			if (psc)
+				std::swap(psc->at(0), psc->at(1));
+		}
+		return ;
+	}
 
-int	PmergeMe::_binaryInsert(const int& val, int end, std::vector<int>& mc){
+	std::deque<int> mainChain;
+	std::deque<int> subChain;
+	std::deque<pair> pairChain;
+	for (std::deque<int>::iterator it = pmc->begin() ; it < pmc->end() ; it += 2){
+		if (it == pmc->end() - 1){
+			subChain.push_back(*it);
+			pairChain.push_back(pair(0,*it));
+			break;
+		}
+		_cnt++;
+		if (*it >= *(it + 1)){
+			mainChain.push_back(*it);
+			subChain.push_back(*(it + 1));
+			pairChain.push_back(pair(*it, *(it + 1)));
+		}
+		else{
+			mainChain.push_back(*(it + 1));
+			subChain.push_back(*it);
+			pairChain.push_back(pair(*(it + 1), *it));
+		}
+	}
+
+	_mergeInsertionSort(&mainChain, &subChain, &pairChain);
+
+	std::deque<int> jacobNums;
+	_getJacobsthalNumbers(jacobNums, subChain.size());
+	int	mergeCnt = 0;
+
+	for (size_t i = 0; i != jacobNums.size() ; i++){
+		int jacobNumIdx = jacobNums[i] - 1;
+		while (jacobNumIdx >= 0 && (i == 0 || jacobNumIdx > jacobNums[i - 1] - 1)){
+			_binaryInsert(subChain[jacobNumIdx], mergeCnt + jacobNumIdx, mainChain);
+			mergeCnt++;
+			jacobNumIdx--;
+		}
+	}
+
+	size_t jacobNumEndIdx = *(jacobNums.end() - 1) - 1;
+	for (size_t i = subChain.size() - 1 ; i > jacobNumEndIdx ; i--){
+		if (i + mergeCnt > mainChain.size() - 1){
+			_binaryInsert(subChain[i], mainChain.size(), mainChain);
+			mergeCnt++;
+		}
+		else{
+			_binaryInsert(subChain[i], mergeCnt + i, mainChain);
+			mergeCnt++;
+		}
+	}
+
+	*pmc = mainChain;
+	if (psc){
+		for (size_t i = 0 ; i != pmc->size() ; i++){
+			for(size_t j = 0 ; j != ppc->size() ; j++){
+				if ((*pmc)[i] == (*ppc)[j].first){
+					(*psc)[i] = (*ppc)[j].second;
+				}
+			}
+		}
+		if ((*ppc)[ppc->size() - 1].first == 0)
+			(*psc)[psc->size() - 1] = (*ppc)[ppc->size() - 1].second;
+	}
+}
+
+void	PmergeMe::_binaryInsert(const int& val, int end, std::vector<int>& mc){
 	int start = 0;
 	int mid;
 	while (start < end){
@@ -129,7 +215,20 @@ int	PmergeMe::_binaryInsert(const int& val, int end, std::vector<int>& mc){
 			end = mid;
 	}
 	mc.insert(mc.begin() + start , val);
-	return (start);
+}
+
+void	PmergeMe::_binaryInsert(const int& val, int end, std::deque<int>& mc){
+	int start = 0;
+	int mid;
+	while (start < end){
+		mid = (end - start) / 2 + start;
+		_cnt++;
+		if (val >= mc[mid])
+			start = mid + 1;
+		else
+			end = mid;
+	}
+	mc.insert(mc.begin() + start , val);
 }
 
 void	PmergeMe::_getJacobsthalNumbers(std::vector<int>& jacobNums, const int size){
@@ -145,6 +244,19 @@ void	PmergeMe::_getJacobsthalNumbers(std::vector<int>& jacobNums, const int size
 	}
 }
 
+void	PmergeMe::_getJacobsthalNumbers(std::deque<int>& jacobNums, const int size){
+	int x = 0;
+	int y = 1;
+	int tmpX;
+
+	while ((2 * x + y) < size){
+		tmpX = x;
+		x = y;
+		y = 2 * tmpX + y;
+		jacobNums.push_back(y);
+	}
+}
+
 void	PmergeMe::prtSpecification(){
-	std::cout<<"Time to process a range of "<<_range<<" elements with "<<_type<<" "<< std::fixed<<std::setprecision(5)<<_duration<<" us"<<"cnt: "<< _cnt<<"\n";
+	std::cout<<"Time to process a range of "<<_range<<" elements with "<<_type<<" "<< std::fixed<<std::setprecision(5)<<_duration<<"us"<<" cnt: "<< _cnt<<"\n";
 }
