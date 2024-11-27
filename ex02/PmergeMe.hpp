@@ -5,6 +5,9 @@
 # include <vector>
 # include <deque>
 # include <sys/time.h>
+# include <utility>
+
+typedef std::pair<int,int> pair;
 
 class PmergeMe{
 	public:
@@ -18,10 +21,10 @@ class PmergeMe{
 		PmergeMe();
 		PmergeMe(const PmergeMe& rhs);
 
-		void	_mergeInsertionSort(std::vector<int>* pmc, std::vector<int>* psc);
+		void	_mergeInsertionSort(std::vector<int>* pmc, std::vector<int>* psc, std::vector<pair>* ppc);
 		// void	_mergeInsertionSort(std::deque<int>* pmc, std::deque<int>* psc);
 
-		int		_binaryInsert(const int& here, int end, std::vector<int>& mc);
+		int		_binaryInsert(const int& val, int end, std::vector<int>& mc);
 		// int		_binaryInsert(const int& val, int end, std::deque<int>& mc);
 
 		void	_getJacobsthalNumbers(std::vector<int>& jacobNums, const int size);
@@ -33,8 +36,6 @@ class PmergeMe{
 		long long			_range;
 		double				_duration;
 		std::string			_type;
-		std::vector<int>	_ov; // ov: origin Vector
-		std::deque<int>		_od; // od: origin Deque
 };
 
 # endif
