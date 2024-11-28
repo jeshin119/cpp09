@@ -36,7 +36,7 @@ int main(int ac, char** av){
 
 	//Before
 	std::cout << "Berfore: ";
-	for (std::vector<int>::iterator i = ov.begin(); i != ov.end(); i++)
+	for (std::deque<int>::iterator i = od.begin(); i != od.end(); i++)
 		std::cout << *i << " " ;
 	std::cout <<"\n";
 
@@ -46,7 +46,7 @@ int main(int ac, char** av){
 
 	//After
 	std::cout << "After:   ";
-	for (std::vector<int>::iterator i = ov.begin(); i != ov.end(); i++)
+	for (std::deque<int>::iterator i = od.begin(); i != od.end(); i++)
 		std::cout << *i << " " ;
 	std::cout <<"\n";
 

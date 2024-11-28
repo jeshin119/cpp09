@@ -1,31 +1,25 @@
 # include <iostream>
 # include <vector>
 # include <deque>
-# include <sys/time.h>
-# include <iomanip>
 # include <algorithm>
 # include "PmergeMe.hpp"
+# include <ctime>
+# include <cstring>
 
 PmergeMe::PmergeMe(std::vector<int>& v) : _cnt(0), _range(v.size()) , _type("std::vector"){
-	struct timeval		startTime;
-	struct timeval		endTime;
-
-	gettimeofday(&startTime, 0);
+	std::clock_t start = std::clock();
 	if (v.size() != 1)
 		_mergeInsertionSort(&v, 0, 0);
-	gettimeofday(&endTime, 0);
-	_duration = (endTime.tv_sec - startTime.tv_sec) * 1000000.0 + (endTime.tv_usec - startTime.tv_usec) * 1.0;
+    std::clock_t end = std::clock();
+    _duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000;
 }
 
 PmergeMe::PmergeMe(std::deque<int>& d) : _cnt(0), _range(d.size()) , _type("std::deque"){
-	struct timeval		startTime;
-	struct timeval		endTime;
-
-	gettimeofday(&startTime, 0);
+	std::clock_t start = std::clock();
 	if (d.size() != 1)
 		_mergeInsertionSort(&d, 0, 0);
-	gettimeofday(&endTime, 0);
-	_duration = (endTime.tv_sec - startTime.tv_sec) * 1000000.0 + (endTime.tv_usec - startTime.tv_usec);
+    std::clock_t end = std::clock();
+    _duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000;
 }
 
 PmergeMe::~PmergeMe(){}
@@ -101,10 +95,14 @@ void	PmergeMe::_mergeInsertionSort(std::vector<int>* pmc, std::vector<int>* psc,
 	//갱신
 	*pmc = mainChain;
 	if (psc){
+		bool visited[ppc->size()];
+		std::memset(visited, 0, ppc->size());
 		for (size_t i = 0 ; i != pmc->size() ; i++){
 			for(size_t j = 0 ; j != ppc->size() ; j++){
-				if ((*pmc)[i] == (*ppc)[j].first){
+				if (!visited[j] && (*pmc)[i] == (*ppc)[j].first){
 					(*psc)[i] = (*ppc)[j].second;
+					visited[j] = 1;
+					break;
 				}
 			}
 		}
@@ -191,10 +189,14 @@ void	PmergeMe::_mergeInsertionSort(std::deque<int>* pmc, std::deque<int>* psc, s
 
 	*pmc = mainChain;
 	if (psc){
+		bool visited[ppc->size()];
+		std::memset(visited, 0, ppc->size());
 		for (size_t i = 0 ; i != pmc->size() ; i++){
 			for(size_t j = 0 ; j != ppc->size() ; j++){
-				if ((*pmc)[i] == (*ppc)[j].first){
+				if (!visited[j] && (*pmc)[i] == (*ppc)[j].first){
 					(*psc)[i] = (*ppc)[j].second;
+					visited[j] = 1;
+					break;
 				}
 			}
 		}
@@ -258,5 +260,6 @@ void	PmergeMe::_getJacobsthalNumbers(std::deque<int>& jacobNums, const int size)
 }
 
 void	PmergeMe::prtSpecification(){
-	std::cout<<"Time to process a range of "<<_range<<" elements with "<<_type<<" "<< std::fixed<<std::setprecision(5)<<_duration<<"us"<<" cnt: "<< _cnt<<"\n";
+	// std::cout<<"Time to process a range of "<<_range<<" elements with "<<_type<<" "<< std::fixed<<std::setprecision(5)<<_duration<<"ms"<<" cnt: "<< _cnt<<"\n";
+	std::cout<<"Time to process a range of "<<_range<<" elements with "<<_type<<" "<< std::fixed<<_duration<<"ms"<<" cnt: "<< _cnt<<"\n";
 }
