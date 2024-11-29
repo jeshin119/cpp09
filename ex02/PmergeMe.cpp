@@ -260,6 +260,5 @@ void	PmergeMe::_getJacobsthalNumbers(std::deque<int>& jacobNums, const int size)
 }
 
 void	PmergeMe::prtSpecification(){
-	// std::cout<<"Time to process a range of "<<_range<<" elements with "<<_type<<" "<< std::fixed<<std::setprecision(5)<<_duration<<"ms"<<" cnt: "<< _cnt<<"\n";
-	std::cout<<"Time to process a range of "<<_range<<" elements with "<<_type<<" "<< std::fixed<<_duration<<"ms"<<" cnt: "<< _cnt<<"\n";
+	std::cout<<"Time to process a range of "<<_range<<" elements with "<<_type<<" "<<_duration<<"ms"<<" cnt: "<< _cnt<<"\n";
 }

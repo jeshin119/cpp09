@@ -9,7 +9,7 @@ int main(int ac, char** av){
 	}
 	try{
 		BitcoinExchange	be;
-		be.Exchange(av[1]);
+		be.exchange(av[1]);
 	}catch(std::runtime_error& e){
 		std::cerr<<e.what();
 	}

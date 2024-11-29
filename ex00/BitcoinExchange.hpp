@@ -9,11 +9,17 @@ class BitcoinExchange{
 		BitcoinExchange();
 		~BitcoinExchange();
 
-		void	Exchange(char* inFile);
-		void	Calculate(std::string date, double val);
+		void	exchange(const char* inFile);
+		void	calculate(const std::string& date, const double& val);
 	private:
 		BitcoinExchange(const BitcoinExchange& rhs);
-		BitcoinExchange&				operator=(BitcoinExchange& rhs);
+		BitcoinExchange&	operator=(BitcoinExchange& rhs);
+
+		bool		_checkIss(std::istringstream& iss);
+		bool		_checkDate(const std::string& date);
+		bool		_checkVal(const double& val);
+		int 		_toDate(const std::string& token);
+
 		std::map<std::string, double>	_m;
 };
 
